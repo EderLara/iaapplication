@@ -3,7 +3,7 @@ from datetime import date
 
 def subirImagen(instance, filename) -> str:
     today = date.today().strftime('%Y/%m/%d')
-    return f'img_predict/{today}/filename'
+    return f'img_predict/{today}/' + filename
 
 # Create your models here.
 class Predicciones(models.Model):
