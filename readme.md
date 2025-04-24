@@ -15,6 +15,7 @@ pip install Django==5.2 Pillow Dotenv
 1. crear la clase: class Prediccion(models.Model): ...
 
 # Adicionar a admin.py de la aplicacion
+1. registrar el modelo de datos en el archivo admin.py de la aplicacion
 
 ## Ejecutar para utilizar base de datos:
 ~~~
