@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}             <!-- Extendemos de este archivo para los estilos -->
+{% block titulo %}Sistema de reconocimiento AI{% endblock %}
+
+{% block contenido %}
+    <section class="container">
+        <div class="row">
+            <form action="" enctype="multipart/form-data">
+                <div class="col-12">
+                    {{ formulario.imagen }}
+                </div>
+                <div class="col-6">
+                    <button class="btn bnt-outline-success btn-lg">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

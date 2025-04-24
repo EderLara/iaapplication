@@ -6,7 +6,7 @@ class PrediccionForm(forms.ModelForm):
 
     class Meta:
         model = Predicciones
-        fields = 'imagen'
+        fields = ['imagen']
         widgets = {
             'imagen': forms.ClearableFileInput(attrs={'class': 'form-control', 'type': 'file'})
         }
