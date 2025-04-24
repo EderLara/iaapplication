@@ -31,6 +31,12 @@
                             <p>Confianza: {{ confianza|floatformat:2 }}%</p>
                         </div>
                         <div class="col">
+                            {% if imagen_preprocesada %}
+                            <h3>Imagen preprocesada:</h3>
+                            <img src="{{ imagen_preprocesada }}" alt="Imagen Preprocesada" style="max-width: 300px;">
+                        {% endif %}
+                        </div>
+                        <div class="col">
                             {% if imagen_url %}
                             <h3>Imagen Subida:</h3>
                             <img src="{{ imagen_url }}" alt="Imagen Predicha" style="max-width: 300px;">

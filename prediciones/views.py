@@ -6,6 +6,9 @@ from tensorflow import keras
 from PIL import Image
 import numpy as np
 import os
+import io
+from django.conf import settings  # Importa la configuración de Django
+from django.core.files.base import ContentFile
 
 # cargar el modelo:
 model = keras.models.load_model('core/best_mnist_model.h5') 
@@ -34,6 +37,21 @@ class PrediccionView(TemplateView):
                 img_array = np.array(img) / 255.0
                 img_array = img_array.reshape(1, 784)
 
+                img_array_reshaped = img_array.reshape(28, 28) # Reshape para visualización
+
+                # Convertir el array de numpy a una imagen PIL
+                image_pil = Image.fromarray((img_array_reshaped * 255).astype(np.uint8))
+
+                # Guardar la imagen PIL en memoria
+                buffer = io.BytesIO()
+                image_pil.save(buffer, format='PNG')
+                image_file_name = f"preprocesada_{prediccion.id}.png" # Nombre único para la imagen preprocesada
+                content_file = ContentFile(buffer.getvalue(), name=image_file_name)
+
+                # Guardar la imagen preprocesada en el modelo Predicciones (asumiendo que tienes un campo 'imagen_preprocesada')
+                prediccion.imagen_preprocesada = content_file
+                prediccion.save()
+
                 # Realizar la predicción
                 predictions = model.predict(img_array)
                 predicted_class = np.argmax(predictions[0])
@@ -47,6 +65,7 @@ class PrediccionView(TemplateView):
                 # Renderizar el template nuevamente con los resultados y el posible mensaje de la URL
                 context = {
                     'formulario': self.formulario,
+                    'imagen_preprocesada' : prediccion.imagen_preprocesada.url,
                     'prediccion': predicted_class,
                     'confianza': confidence,
                     'imagen_url': prediccion.imagen.url,

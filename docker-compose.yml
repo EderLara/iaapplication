@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: djangoia
+      POSTGRES_PASSWORD: ia2025
+      POSTGRES_DB: appia
+    ports:
+      - "5432:5432" # Solo para desarrollo, remover en producción
+
+  # model_app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.model
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - ./core/best_mnist_model.h5:/app/model/best_mnist_model.h5
+  #     - ./model:/app/model
+  #   networks:
+  #     - app-network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://djangoia:ia2025@db:5432/appia
+      # MODEL_API_URL: http://model_app:5000/predict # Asegúrate de que coincida
+    depends_on:
+      - db
+      # - model_app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
