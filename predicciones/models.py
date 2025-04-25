@@ -1,9 +1,11 @@
 from django.db import models
+from datetime import datetime, date
 
 # Create your models here.
 
 def subir_imagen(instance, filename):
-    return f"predicciones/{instance.fecha}/{filename}"
+    today = date.today().strftime('%Y/%m/%d')
+    return f'img_predict/{today}/' + filename
 
 
 class Prediccion(models.Model):
